@@ -1,22 +1,22 @@
-* [TOC](ToC-Contrail-Fabric-Management)
+* [TOC](Contrail-Fabric-Management.md)
 
 # 8 Overlay-Underlay
 
 The overlay-underlay connectivity is implemented by DC-GW role.
 
 Create public network. It's a virtual network who has underlay routable address space. It's extended to underlay by DC-GW.
-![Figure 8.1 Create public network](Solution-CFM/F8-1.png)
+![Figure 8.1 Create public network](F8-1.png)
 
-![Figure 8.2 Create FIP pool](Solution-CFM/F8-2.png)
+![Figure 8.2 Create FIP pool](F8-2.png)
 
 
 ## 8.1 DC-GW on MX
 
 Extend virtual network to MX.
-![Figure 8.3 Extend public network to MX](Solution-CFM/F8-3.png)
+![Figure 8.3 Extend public network to MX](F8-3.png)
 
-* [public network configuration on MX-1](A5-Overlay-underlay-configuration#a51-public-network-on-mx-1)
-* [public network configuration on MX-2](A5-Overlay-underlay-configuration#a52-public-network-on-mx-2)
+* [public network configuration on MX-1](A5-Overlay-underlay-configuration.md#a51-public-network-on-mx-1)
+* [public network configuration on MX-2](A5-Overlay-underlay-configuration.md#a52-public-network-on-mx-2)
 
 
 ### 8.1.1 Directly underlay access
@@ -35,11 +35,11 @@ set chassis network-services enhanced-ip
 ```
 Service interface `se-<fpc>/<pic>/0` shows up after commit.
 
-![Figure 8.4 Configure service interface to MX](Solution-CFM/F8-4.png)
+![Figure 8.4 Configure service interface to MX](F8-4.png)
 
-![Figure 8.5 Create FIP](Solution-CFM/F8-5.png)
+![Figure 8.5 Create FIP](F8-5.png)
 
-![Figure 8.6 Assign FIP](Solution-CFM/F8-6.png)
+![Figure 8.6 Assign FIP](F8-6.png)
 
 
 ### 8.1.3 SNAT

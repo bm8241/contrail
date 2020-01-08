@@ -1,7 +1,7 @@
-* [TOC](ToC-Contrail-Fabric-Management)
+* [TOC](Contrail-Fabric-Management.md)
 
 # 4 BMS inventory
 
 Create BMS inventory.
-![Figure 4.1 Create BMS inventory](Solution-CFM/F4-1.png)
+![Figure 4.1 Create BMS inventory](F4-1.png)
 

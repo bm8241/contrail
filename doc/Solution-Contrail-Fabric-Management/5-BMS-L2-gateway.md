@@ -1,61 +1,61 @@
-* [TOC](ToC-Contrail-Fabric-Management)
+* [TOC](Contrail-Fabric-Management.md)
 
 # 5 BMS L2 gateway
 
 ## 5.1 Virtual network
 
 Create a virtual network.
-![Figure 5.1 Create virtual network](Solution-CFM/F5-1.png)
+![Figure 5.1 Create virtual network](F5-1.png)
 
 This is the workflow when a virtual network is created.
-![Figure 5.2 Workflow](Solution-CFM/F5-2.png)
+![Figure 5.2 Workflow](F5-2.png)
 
 
 ## 5.2 VM instance
 
 Launch a VM instance on virtual network.
-![Figure 5.3 Create VM instance](Solution-CFM/F5-3.png)
+![Figure 5.3 Create VM instance](F5-3.png)
 
 This is the workflow when a VM instance is created.
-![Figure 5.4 Workflow](Solution-CFM/F5-4.png)
+![Figure 5.4 Workflow](F5-4.png)
 
 This is the virtual network L3 table on vrouter. It shows the VM route.
-![Figure 5.5 L3 route on vrouter](Solution-CFM/F5-5.png)
+![Figure 5.5 L3 route on vrouter](F5-5.png)
 
 This is the virtual network L2 table on vrouter. It shows the VM L2 route.
-![Figure 5.6 L2 route on vrouter](Solution-CFM/F5-6.png)
+![Figure 5.6 L2 route on vrouter](F5-6.png)
 
 This is the route table on control node.
-![Figure 5.7 Route on control node](Solution-CFM/F5-7.png)
+![Figure 5.7 Route on control node](F5-7.png)
 
 
 ## 5.3 BMS instance
 
 Launch a BMS instance.
-![Figure 5.8 Create BMS instance](Solution-CFM/F5-8.png)
+![Figure 5.8 Create BMS instance](F5-8.png)
 
 Virtual port group is created.
-![Figure 5.9 Virtual port group for BMS instance](Solution-CFM/F5-9.png)
+![Figure 5.9 Virtual port group for BMS instance](F5-9.png)
 
 This is the workflow for BMS DHCP request.
-![Figure 5.10 Workflow](Solution-CFM/F5-10.png)
+![Figure 5.10 Workflow](F5-10.png)
 
-* [BMS configuration on L2GW](A3-L2-gateway-configuration#a31-bms-l2-on-l2gw)
+* [BMS configuration on L2GW](A3-L2-gateway-configuration.md#a31-bms-l2-on-l2gw)
 
 
 ## 5.4 Control plane
 
 This is the virtual network L3 table on CSN.
-![Figure 5.11 CSN L3 table](Solution-CFM/F5-11.png)
+![Figure 5.11 CSN L3 table](F5-11.png)
 
 This is the virtual network L2 table on CSN. Given the association between L2 GW (leaf) and CSN, BMS L2 route is advertised.
-![Figure 5.12 CSN L2 table](Solution-CFM/F5-12.png)
+![Figure 5.12 CSN L2 table](F5-12.png)
 
 This is the virtual network L2 table on compute.
-![Figure 5.13 Compute L2 table](Solution-CFM/F5-13.png)
+![Figure 5.13 Compute L2 table](F5-13.png)
 
 This is the virtual network EVPN table on control node.
-![Figure 5.14 Control node table](Solution-CFM/F5-14.png)
+![Figure 5.14 Control node table](F5-14.png)
 
 ```
 root@vqfx-leaf-1> show evpn database 
@@ -275,8 +275,8 @@ default-switch.evpn.0: 6 destinations, 10 routes (6 active, 0 holddown, 0 hidden
 ## 5.5 Connectivity
 
 Default security group needs to be updated to allow the connectivity between VM and BMS. Change ingress type to `CIDR` and allow all addresses.
-![Figure 5.15 Security Group](Solution-CFM/F5-15.png)
+![Figure 5.15 Security Group](F5-15.png)
 
 This is the workflow when BMS connects to VM.
-![Figure 5.16 Workflow](Solution-CFM/F5-16.png)
+![Figure 5.16 Workflow](F5-16.png)
 

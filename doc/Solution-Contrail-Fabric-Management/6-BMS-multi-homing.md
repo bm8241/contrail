@@ -1,23 +1,23 @@
-* [TOC](ToC-Contrail-Fabric-Management)
+* [TOC](Contrail-Fabric-Management.md)
 
 # 6 BMS Multi-homing
 
 ## 6.1 Create BMS inventory
 
 Create bonding interface when create BMS inventory.
-![Figure 6.1 BMS inventory](Solution-CFM/F6-1.png)
+![Figure 6.1 BMS inventory](F6-1.png)
 
 
 ## 6.2 Launch BMS
 
 Launch BMS instance with bonding interface.
-![Figure 6.2 Create BMS instance](Solution-CFM/F6-2.png)
+![Figure 6.2 Create BMS instance](F6-2.png)
 
 Virtual port group is created for BMS instance.
-![Figure 6.3 VPG for BMS instance](Solution-CFM/F6-3.png)
+![Figure 6.3 VPG for BMS instance](F6-3.png)
 
-* [Multi-homing BMS configuration on leaf-1](A3-L2-gateway-configuration#a32-multi-homing-bms-on-leaf-1)
-* [Multi-homing BMS configuration on leaf-2](A3-L2-gateway-configuration#a33-multi-homing-bms-on-leaf-2)
+* [Multi-homing BMS configuration on leaf-1](A3-L2-gateway-configuration.md#a32-multi-homing-bms-on-leaf-1)
+* [Multi-homing BMS configuration on leaf-2](A3-L2-gateway-configuration.md#a33-multi-homing-bms-on-leaf-2)
 
 
 ## 6.3 Bonding configuration on BMS
@@ -124,5 +124,5 @@ root@vqfx-leaf-1> show route table default-switch.evpn.0
 ```
 
 The ECMP route on vrouter for multi-homing BMS.
-![Figure 6.4 Vrouter ECMP route](Solution-CFM/F6-4.png)
+![Figure 6.4 Vrouter ECMP route](F6-4.png)
 

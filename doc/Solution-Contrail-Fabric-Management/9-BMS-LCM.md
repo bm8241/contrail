@@ -1,4 +1,4 @@
-* [TOC](ToC-Contrail-Fabric-Management)
+* [TOC](Contrail-Fabric-Management.md)
 
 # 9 BMS LCM
 
