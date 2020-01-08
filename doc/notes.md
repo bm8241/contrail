@@ -1,3 +1,24 @@
+curl -H "X-Auth-Token:$(keystone token-get | awk '/ id / {print $4}')" http://127.0.0.1:8082/virtual-networks | python -m json.tool
+
+
+strace -p 19826 -e trace=network -s 512
+
+
+curl -s -H "X-Auth-Token: $(keystone token-get | awk '/ id / {print $4}')" local
+host:8082/global-vrouter-configs
+
+
+$ qemu-img convert -f qcow2 -O vmdk trusty-server-cloudimg-amd64-disk1.img trust
+y-server-cloudimg-amd64-disk1.vmdk
+
+$ head -20 trusty-server-cloudimg-amd64-disk1.vmdk
+
+$ glance image-create --name esxi/ubuntu-trusty --disk-format vmdk --container-f
+ormat bare --property vmware_disktype="sparse" --property vmware_adaptertype="id
+e" --is-public True --file trusty-server-cloudimg-amd64-disk1.vmdk
+
+docker run -it --entrypoint "/bin/bash" <image ID>
+
 
 * offload
 
