@@ -5,7 +5,7 @@
 In this case, the cluster is deployed on the primary site. Fabric (L2GW and L3GW) are deployed on primary site and multiple remote/secondary sites.
 
 
-## 3.1 Fabric extenstion
+## 3.1 Fabric extension
 
 Here are 2 options for BMS L3 GW, centralized or distributed.
 * With centralized L3 GW, all L3 routing including remote site is done on centralized L3 GW. It causes traffic detour.
