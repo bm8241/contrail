@@ -1,4 +1,4 @@
-* [TOC](ToC-Contrail-Fabric-Management)
+* [TOC](Contrail-Fabric-Management.md#toc)
 
 ## A.4 L3 gateway configuration
 

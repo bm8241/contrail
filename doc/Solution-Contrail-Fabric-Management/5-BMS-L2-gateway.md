@@ -1,4 +1,4 @@
-* [TOC](Contrail-Fabric-Management.md)
+* [TOC](Contrail-Fabric-Management.md#toc)
 
 # 5 BMS L2 gateway
 
