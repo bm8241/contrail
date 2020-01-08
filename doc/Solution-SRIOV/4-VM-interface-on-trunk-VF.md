@@ -69,7 +69,7 @@ This step has to be done via Contrail API, because some property settings are no
 #### 6. Configure device.
 Once the port is created, device manager service in Contrail will start a workflow to configure device.
 
-* [Configuration example](A2-Untagged.md#untagged)
+* [Configuration example](A2-Untagged.md#a2-untagged)
 
 
 ## 4.2 libvirt
