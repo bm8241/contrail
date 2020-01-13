@@ -28,12 +28,11 @@ TF can work alone without any orchestration. Client can connect to API server di
 
 # 2 REST API
 
-[API Guide - Configuration REST API](Configuration-REST.md)
-
+[API Guide - Configuration REST API](Configuration-REST.md#api-guide---configuration-rest-api)
 
 # 3 Python API
 
-[API Guide - Configuration Python API](Configuration-Python.md)
+[API Guide - Configuration Python API](Configuration-Python.md#api-guide---configuration-python-api)
 
 
 # 4 GO API
