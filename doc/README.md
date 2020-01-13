@@ -8,6 +8,6 @@
 
 # API Guide
 
-* [Configuration](API-Configuration/Configuration.md#toc)
+* [Configuration](API/Configuration.md#1-overview)
 
 
