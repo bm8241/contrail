@@ -240,14 +240,14 @@ None.
 # 4. Implementation
 
 ## 4.1 Relationship
-
+```
 +-----+   +-----+   +----+
 | VMI |-->|     |-->| PI |
 +-----+   | VPG |   +----+
 +-----+   |     |   +----+
 | VMI |-->|     |-->| PI |
 +-----+   +-----+   +----+
-
+```
 VMI reference to VPG. VPG reference to PI (physical-interface).
 
 VPG can't be deleted when it's referenced by any VMI. This will remove that specific check.
