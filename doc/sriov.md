@@ -62,7 +62,7 @@ Here is an example of VMI for BMS untagged interface.
 
 3. Because of #2, there is a specific check to ensure VPG is not deleted when there is referenced from VMI. In general, a resource can't be deleted if it's referenced by any other resources. If the relationship is correct, that generic rule will ensure VPG not being deleted if it's referenced by any VMI. Specific check is not required.
 
-4. When VMI is deleted, VPG still has reference to it.
+4. When VMI is deleted, VPG still has reference to it. Because that's a faked reference, there is no back-reference in VMI to VPG. If it's a real reference, it will cause a dead lock. VPG can't be deleted because of the specific check and VMI can't be deleted either because of the back-reference.
 
 5. The physical-interface is specified by key-value-pair. It should be a reference.
 
