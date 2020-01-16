@@ -632,4 +632,47 @@ When adding primary interface or sub-interface to existing VPG, the same group o
       - white
       attr: null
 ```
+```
+- resource_type: virtual-port-group
+  parent_type: fabric
+  resource_fq_name:
+  - default-global-system-config
+  - poc
+  - bms-11
+  resource:
+    display_name: bms-11
+    fq_name:
+    - default-global-system-config
+    - poc
+    - bms-11
+    parent_type: fabric
+    parent_uuid: f23586a2-76ef-4a50-bfc4-772da8f17b94
+    physical_interface_refs:
+    - attr:
+        ae_num: 1
+      href: http://10.6.11.1:8082/physical-interface/cb9fd146-3f98-4568-b022-6627ac3ebc9b
+      to:
+      - default-global-system-config
+      - vqfx-leaf-1
+      - xe-0/0/6
+      uuid: cb9fd146-3f98-4568-b022-6627ac3ebc9b
+    - attr:
+        ae_num: 2
+      href: http://10.6.11.1:8082/physical-interface/1ba2143f-4480-4f81-ac72-2875b53a417c
+      to:
+      - default-global-system-config
+      - vqfx-leaf-2
+      - xe-0/0/6
+      uuid: 1ba2143f-4480-4f81-ac72-2875b53a417c
+    uuid: b5edbf21-00bf-4c63-8fe1-68a3af797269
+    virtual_machine_interface_refs:
+    - attr: null
+      href: http://10.6.11.1:8082/virtual-machine-interface/8572a862-6d8b-4804-8422-dda738ca815d
+      to:
+      - default-domain
+      - admin
+      - bms-11-white
+      uuid: 8572a862-6d8b-4804-8422-dda738ca815d
+    virtual_port_group_user_created: true
+```
 
