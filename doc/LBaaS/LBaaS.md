@@ -6,7 +6,7 @@ Contrail LBaaS implementation is based on plugin model. It provides an interface
 
 ## 1.1 Workflow
 
-![Figure Workflow](LBaaS/Figure-Workflow.png)
+![Figure Workflow](Figure-Workflow.png)
 
 * Servce Appliance Set is to define LB provider and specify driver location.
 * When LBaaS is configured, service monitor will take the configuration updates and invoke driver to update LB.
@@ -14,7 +14,7 @@ Contrail LBaaS implementation is based on plugin model. It provides an interface
 
 ## 1.2 Configuration Object
 
-![Figure Object](LBaaS/Figure-Object.png)
+![Figure Object](Figure-Object.png)
 
 There are 2 options to create LBaaS.
 1. By OpenStack (Neutron) API, in this case, instance IP and port/VMI will be configured by Neutron Contrail LBaaS Plugin, service appliance set has to be configured by Contrail configuration API.

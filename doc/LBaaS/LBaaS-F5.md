@@ -85,7 +85,7 @@ Note, due to an issue to call socket functions, remove monkey patch from f5_open
 
 ## 3.1 Virtual LTM
 
-![Figure vLTM](LBaaS/Figure-vLTM.png)
+![Figure vLTM](Figure-vLTM.png)
 
 The vLTM is launched as a VM on 3 virtual networks, management, external and internal. Service monitor on underlay needs to access the management interface of vLTM to manage it. The gateway is required to support such overlay and underlay connection. Virtual network 'public' is exposed to underlay by gateway. A floating IP is allocated from 'public' virtual network and assigned to vLTM management interface. Now, service monitor can connect to and manage vLTM with that floating IP.
 
@@ -99,7 +99,7 @@ For the client on underlay to use LB service, route of VIP needs to be advertise
 
 ## 3.2 Physical LTM
 
-![Figure pLTM](LBaaS/Figure-pLTM.png)
+![Figure pLTM](Figure-pLTM.png)
 
 For physical LTM, the management interface connects to IP fabric for service monitor to connect and manage. The external and internal interfaces need to connect to virtual network 'external' and 'internal' in Contrail. Gateway is required to make such underlay overlay connection. The external and internal interfaces connect to VRF RI 'internal' and 'external' respectively on gateway and those two RIs map to virtual networks in Contrail.
 
