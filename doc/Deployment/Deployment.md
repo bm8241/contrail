@@ -21,7 +21,7 @@ With the current release, the solution with single Contrail cluster is recommend
 
 ![Figure 2.1 1 Cluster](1-cluster.png)
 
-The solution with two Contrail clusters, one for underlay and infra-overlay and another for tenant-overlay, is not recommended. Because it's difficult to manage the conflict between to cluster when they manage the same device for different layers.
+The solution with two Contrail clusters, one for underlay and infra-overlay and another for tenant-overlay, is not recommended. Because it's difficult to manage the conflict between two clusters when they manage the same device for different layers.
 
 ![Figure 2.2 2 Cluster](2-cluster.png)
 
