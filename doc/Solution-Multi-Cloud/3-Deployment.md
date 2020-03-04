@@ -2,7 +2,7 @@
 
 # 3 Deployment
 
-## 3.1 Deploy multi-cloud on Contrail-Kubernetes cluster
+## 3.1 Deploy on Contrail-Kubernetes cluster
 
 This deployment is based on [contrail-poc](https://github.com/tonyliu0592/contrail-poc) cluster `kubernetes-mc`. The deployment is done on Contrail Command.
 
