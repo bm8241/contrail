@@ -309,22 +309,24 @@ docker exec contrail_command bash -c \
         --inventory inventories/inventory.yml"
 ```
 
+#### Delete cloud resources.
+```
+docker exec contrail_command bash -c \
+    "cd /root; deployer topology destroy \
+        --secret secret.yaml"
+```
+
 
 ### 3.2.6 VM on VPC
 
 Launch a VM on the VPC private subnet with the same security group as MC-GW. Private VM can be accessed from MC-GW.
 
 
-### 3.2.7 MC-GW
+### 3.2.7 Overlay-underlay gateway
+
+The virtual network where VM and BMS is launched has to be extended to the gateway for overlay-underlay connectivity. Gateway also needs to peer with BIRD service on MC-GW to populate virtual network.
 
 
 
-
-Delete cloud resources.
-```
-docker exec contrail_command bash -c \
-    "cd /root; deployer topology destroy \
-        --secret secret.yaml"
-```
 
 
