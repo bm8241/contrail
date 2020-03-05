@@ -3,66 +3,8 @@
 ## A.4 Deployment YAML
 
 ### A.4.1 Kubernetes cluster
-Cloud topology.yaml
-```
-- provider: aws
-  organization:
-  project:
-  prebuild: r1912
-  regions:
-    - name: us-west-1
-      vpc:
-        - name: vpc-1-09019c77-0b22-47a9-bc6d-d0b3d11f2d9c
-          cidr_block: 10.11.0.0/16
-          subnets:
-            - name: mc-gw-30a8e2a3-f435-42c4-9bff-3c7dcc3ca50f
-              cidr_block: 10.11.0.0/23
-              availability_zone: b
-          security_groups:
-              - name: egress-87adffeb-51c3-4772-b3fd-58655a940968
-                egress:
-                  from_port: 0
-                  to_port: 0
-                  protocol: -1
-                  cidr_blocks:
-                  - 0.0.0.0/0
-              - name: ingress-df1e12ae-56af-4aa4-aaaf-e46232b45abe
-                ingress:
-                  from_port: 0
-                  to_port: 0
-                  protocol: -1
-                  cidr_blocks:
-                  - 0.0.0.0/0
-          instances:
-            - name: mc-gw-vpc-1
-              roles:
-                - gateway
-              provision: true
-              username: ec2-user
-              os: rhel7
-              instance_type: t2.xlarge
-              subnets: mc-gw-30a8e2a3-f435-42c4-9bff-3c7dcc3ca50f
-              availability_zone: b
-              protocols_mode:
-                - ssl_server
-              security_groups:
-                - egress-87adffeb-51c3-4772-b3fd-58655a940968
-                - ingress-df1e12ae-56af-4aa4-aaaf-e46232b45abe
-            - name: node-1-vpc-1
-              roles:
-                - compute_node
-              provision: true
-              username: ec2-user
-              os: rhel7
-              instance_type: t2.xlarge
-              subnets: mc-gw-30a8e2a3-f435-42c4-9bff-3c7dcc3ca50f
-              availability_zone: b
-              security_groups:
-                - egress-87adffeb-51c3-4772-b3fd-58655a940968
-                - ingress-df1e12ae-56af-4aa4-aaaf-e46232b45abe
-```
 
-On-prem topology.yaml
+#### A.4.1.1 On-prem topology.yaml
 ```
 - provider: onprem
   organization:
@@ -130,6 +72,65 @@ On-prem topology.yaml
       AS: 65012
       protocols_mode:
         - bgp
+```
+
+#### A.4.1.2 Cloud topology.yaml
+```
+- provider: aws
+  organization:
+  project:
+  prebuild: r1912
+  regions:
+    - name: us-west-1
+      vpc:
+        - name: vpc-1-09019c77-0b22-47a9-bc6d-d0b3d11f2d9c
+          cidr_block: 10.11.0.0/16
+          subnets:
+            - name: mc-gw-30a8e2a3-f435-42c4-9bff-3c7dcc3ca50f
+              cidr_block: 10.11.0.0/23
+              availability_zone: b
+          security_groups:
+              - name: egress-87adffeb-51c3-4772-b3fd-58655a940968
+                egress:
+                  from_port: 0
+                  to_port: 0
+                  protocol: -1
+                  cidr_blocks:
+                  - 0.0.0.0/0
+              - name: ingress-df1e12ae-56af-4aa4-aaaf-e46232b45abe
+                ingress:
+                  from_port: 0
+                  to_port: 0
+                  protocol: -1
+                  cidr_blocks:
+                  - 0.0.0.0/0
+          instances:
+            - name: mc-gw-vpc-1
+              roles:
+                - gateway
+              provision: true
+              username: ec2-user
+              os: rhel7
+              instance_type: t2.xlarge
+              subnets: mc-gw-30a8e2a3-f435-42c4-9bff-3c7dcc3ca50f
+              availability_zone: b
+              protocols_mode:
+                - ssl_server
+              security_groups:
+                - egress-87adffeb-51c3-4772-b3fd-58655a940968
+                - ingress-df1e12ae-56af-4aa4-aaaf-e46232b45abe
+            - name: node-1-vpc-1
+              roles:
+                - compute_node
+              provision: true
+              username: ec2-user
+              os: rhel7
+              instance_type: t2.xlarge
+              subnets: mc-gw-30a8e2a3-f435-42c4-9bff-3c7dcc3ca50f
+              availability_zone: b
+              security_groups:
+                - egress-87adffeb-51c3-4772-b3fd-58655a940968
+                - ingress-df1e12ae-56af-4aa4-aaaf-e46232b45abe
 ```
 
 ### A.4.2 MC-GW

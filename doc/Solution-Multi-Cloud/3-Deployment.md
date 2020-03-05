@@ -77,6 +77,9 @@ tail -f /var/log/contrail/deploy.log
 
 Once the process is finished, login Contrail Command. There will be `public-cloud` created.
 
+#### [on-prem topology.yaml](A4-Deployment-YAML.md#a411-on-prem-topologyyaml)
+#### [cloud topology.yaml](A4-Deployment-YAML.md#a412-cloud-topologyyaml)
+
 
 ### 3.1.4 Update public cloud
 
