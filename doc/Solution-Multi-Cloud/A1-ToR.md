@@ -10,10 +10,10 @@ set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_clo
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ hold-time 90
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ keep all
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ family inet unicast
-set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ authentication-key "$9$QcRzn6AleW-VY8XUHq.zFuO1IclwY4ZDkWLNbY2UD.P5T6A"
+set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ authentication-key "$9$PQz6cSeX7VKMaUjif5Ctu0Ic-Vs4JDevLNVbaJik.mz6"
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ export contrail_multi_cloud_export_BGP
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ peer-as 65000
-set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ local-as 64512
+set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ local-as 65012
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ bfd-liveness-detection version automatic
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ bfd-liveness-detection minimum-interval 500
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ bfd-liveness-detection multiplier 5
@@ -21,6 +21,7 @@ set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_clo
 set groups __contrail_multi_cloud_BGP__ protocols bgp group __contrail_multi_cloud__ neighbor 10.6.12.81
 set groups __contrail_multi_cloud_BGP__ policy-options policy-statement contrail_multi_cloud_export_BGP term t1 from route-filter 10.6.12.0/24 exact
 set groups __contrail_multi_cloud_BGP__ policy-options policy-statement contrail_multi_cloud_export_BGP term t1 then accept
+set apply-groups __contrail_multi_cloud_BGP__
 ```
 
 ### A.1.2 ToR route table
