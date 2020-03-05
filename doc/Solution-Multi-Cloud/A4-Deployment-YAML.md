@@ -148,14 +148,31 @@
       provision: true
       username: root
       password: c0ntrail123
+      services:
+        - bgp_rr
       roles:
         - gateway
       private_subnet:
-        - 10.6.12.0/24
         - 10.6.11.0/24
+        - 10.6.12.0/24
       protocols_mode:
         - ssl_client
       gateway: 10.6.12.254
+    - name: vqfx-leaf-2
+      public_ip: 10.6.8.12
+      private_ip: 10.6.12.254
+      private_subnet:
+        - 10.6.12.0/24
+      roles:
+        - tor
+      provision: true
+      username: root
+      password: Juniper
+      interface:
+        - irb.12
+      AS: 65012
+      protocols_mode:
+        - bgp
 
 - provider: aws
   organization:
