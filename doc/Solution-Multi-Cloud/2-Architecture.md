@@ -40,6 +40,8 @@ BIRD is the routing component on each MC-GW. On private MC-GW, BIRD peers with t
 #### [BIRD routes on private MC-GW](A2-BIRD.md#a22-routes-on-private-mc-gw)
 #### [BIRD protocols on public MC-GW](A2-BIRD.md#a23-protocols-on-public-mc-gw)
 #### [BIRD routes on public MC-GW](A2-BIRD.md#a24-routes-on-public-mc-gw)
+#### [BIRD configuration on private MC-GW](A2-BIRD.md#a25-configuration-on-private-mc-gw)
+#### [BIRD configuration on public MC-GW](A2-BIRD.md#a26-configuration-on-public-mc-gw)
 
 
 #### 2.1.2.3 Host

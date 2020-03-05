@@ -369,3 +369,435 @@ BIRD 1.6.6 ready.
 10.6.0.31/32       unreachable [gw1006501 18:22:27 from 100.65.0.1] * (100/-) [AS64031e]
 ```
 
+### A.2.5 Configuration on private MC-GW
+#### /etc/multicloud/bird/bird.conf
+```
+include "/etc/multicloud/bird/bird_header.inc";
+
+log stderr  { info, remote, warning, error, auth, fatal, bug };
+
+filter no_def_hub {
+    if net = 0.0.0.0/0 then {
+        if 0.0.0.0/0 ~ local_lan then {
+            reject;
+        }
+    }
+    if source = RTS_BGP then {
+        krt_prefsrc = local_ip;
+        accept;
+    }
+    accept;
+}
+
+filter local_net {
+    if net ~ local_lan then {
+        if source != RTS_BGP then {
+                bgp_next_hop = local_lo;
+                accept;
+        }
+        if bgp_origin=0 then {
+            accept;
+        } else {
+            bgp_next_hop = local_lo;
+            accept;
+        }
+    }
+    if proto = "blackhole_export" then {
+        bgp_next_hop = local_lo;
+        accept;
+    }
+
+    if source = RTS_BGP then {
+        accept;
+    }
+    reject;
+}
+
+filter import_local_net {
+    if net ~ local_lan then accept;
+    reject;
+}
+
+filter import_tor {
+    bgp_origin=1;
+    accept;
+}
+
+table t_mc;
+
+protocol pipe mast_mc
+{
+  table master;
+  peer table t_mc;
+  import none;
+  export all;
+}
+
+protocol kernel mc {
+    table t_mc;
+    scan time 60;
+    import none;
+    export filter no_def_hub;
+    device routes;
+    merge paths yes;
+    kernel table 42;
+}
+
+protocol kernel main{
+    preference 210;
+    scan time 60;
+    import filter import_local_net;
+    learn;
+    export none;
+    merge paths yes;
+}
+
+protocol device {
+    scan time 60;
+}
+
+protocol direct {
+    import filter import_local_net;
+}
+
+protocol bfd {
+    interface "vti*", "tun*", "tap*", "en*", "eth*", "vx-*", "vhost0" {
+      interval 200ms;
+      multiplier 5;
+    };
+
+    multihop {
+      interval 500ms;
+      multiplier 5;
+    };
+};
+
+protocol ospf {
+    import all;
+    area 0 {
+        interface "vx-*" {
+            bfd on;
+            cost 5;
+            type pointopoint;
+            hello 5;
+            retransmit 2;
+            wait 10;
+            dead 20;
+        };
+        interface "vti*" {
+            bfd on;
+            cost 10;
+            type pointopoint;
+            hello 5;
+            retransmit 2;
+            wait 10;
+            dead 20;
+        };
+        interface "tap*", "tun*" {
+            bfd on;
+            cost 15;
+            type pointopoint;
+            hello 5;
+            retransmit 2;
+            wait 10;
+            dead 20;
+        };
+        interface "lo*" {
+            stub;
+        };
+    };
+}
+
+#use this template when your role is GW (not BGP_RR)
+template bgp GW {
+    med metric on;
+    connect retry time 10;
+    error wait time 10, 120;
+    local as 65000;
+    source address local_lo;
+    export filter local_net;
+    bfd on;
+    import all;
+    password "bgp_secret";
+    add paths yes;
+}
+
+#use this template when your role is BGP_RR (not GW)
+template bgp BGP_RR {
+    med metric on;
+    error wait time 10, 120;
+    local as 65000;
+    source address local_lo;
+    export filter local_net;
+    rr client;
+    bfd on;
+    import all;
+    password "bgp_secret";
+    add paths yes;
+}
+
+#use this template when need to connect to TOR switch using eBGP
+template bgp TOR {
+    local as 65000;
+    export filter local_net;
+    password "contrail_secret";
+    bfd on;
+    multihop;
+    import filter import_tor;
+}
+
+include "/etc/multicloud/bird/bird_footer.inc";
+```
+
+#### /etc/multicloud/bird/bird_header.inc 
+```
+define local_lo=100.65.0.1;
+define local_lan=[ 10.6.11.0/24,10.6.12.0/24,0.0.0.0/0  ];
+router id from 100.65.0.0/16;
+define local_ip=10.6.12.81;
+```
+
+#### /etc/multicloud/bird/bird_footer.inc 
+```
+protocol static {
+    # no support for single GW for multi-subnet
+    # in release 5.1
+    check link;
+    export all;
+}
+
+protocol static blackhole_noexport {
+    route 100.65.0.0/16 blackhole;
+    route 100.64.0.0/16 blackhole;
+    export all;
+}
+
+protocol static blackhole_export {
+    check link;
+    export all;
+}
+
+protocol bgp gw1006502 from BGP_RR {
+    neighbor 100.65.0.2 as 65000;
+}
+
+protocol bgp tor10612254 from TOR {
+    local 10.6.12.81 as 65000;
+    neighbor 10.6.12.254 as 65012;
+}
+```
+
+### A.2.6 Configuration on public MC-GW
+#### /etc/multicloud/bird/bird.conf
+```
+include "/etc/multicloud/bird/bird_header.inc";
+
+log stderr  { info, remote, warning, error, auth, fatal, bug };
+
+filter no_def_hub {
+    if net = 0.0.0.0/0 then {
+        if 0.0.0.0/0 ~ local_lan then {
+            reject;
+        }
+    }
+    if source = RTS_BGP then {
+        krt_prefsrc = local_ip;
+        accept;
+    }
+    accept;
+}
+
+filter local_net {
+    if net ~ local_lan then {
+        if source != RTS_BGP then {
+                bgp_next_hop = local_lo;
+                accept;
+        }
+        if bgp_origin=0 then {
+            accept;
+        } else {
+            bgp_next_hop = local_lo;
+            accept;
+        }
+    }
+    if proto = "blackhole_export" then {
+        bgp_next_hop = local_lo;
+        accept;
+    }
+
+    if source = RTS_BGP then {
+        accept;
+    }
+    reject;
+}
+
+filter import_local_net {
+    if net ~ local_lan then accept;
+    reject;
+}
+
+filter import_tor {
+    bgp_origin=1;
+    accept;
+}
+
+table t_mc;
+
+protocol pipe mast_mc
+{
+  table master;
+  peer table t_mc;
+  import none;
+  export all;
+}
+
+protocol kernel mc {
+    table t_mc;
+    scan time 60;
+    import none;
+    export filter no_def_hub;
+    device routes;
+    merge paths yes;
+    kernel table 42;
+}
+
+protocol kernel main{
+    preference 210;
+    scan time 60;
+    import filter import_local_net;
+    learn;
+    export none;
+    merge paths yes;
+}
+
+protocol device {
+    scan time 60;
+}
+
+protocol direct {
+    import filter import_local_net;
+}
+
+protocol bfd {
+    interface "vti*", "tun*", "tap*", "en*", "eth*", "vx-*", "vhost0" {
+      interval 200ms;
+      multiplier 5;
+    };
+
+    multihop {
+      interval 500ms;
+      multiplier 5;
+    };
+};
+
+protocol ospf {
+    import all;
+    area 0 {
+        interface "vx-*" {
+            bfd on;
+            cost 5;
+            type pointopoint;
+            hello 5;
+            retransmit 2;
+            wait 10;
+            dead 20;
+        };
+        interface "vti*" {
+            bfd on;
+            cost 10;
+            type pointopoint;
+            hello 5;
+            retransmit 2;
+            wait 10;
+            dead 20;
+        };
+        interface "tap*", "tun*" {
+            bfd on;
+            cost 15;
+            type pointopoint;
+            hello 5;
+            retransmit 2;
+            wait 10;
+            dead 20;
+        };
+        interface "lo*" {
+            stub;
+        };
+    };
+}
+
+#use this template when your role is GW (not BGP_RR)
+template bgp GW {
+    med metric on;
+    connect retry time 10;
+    error wait time 10, 120;
+    local as 65000;
+    source address local_lo;
+    export filter local_net;
+    bfd on;
+    import all;
+    password "bgp_secret";
+    add paths yes;
+}
+
+#use this template when your role is BGP_RR (not GW)
+template bgp BGP_RR {
+    med metric on;
+    error wait time 10, 120;
+    local as 65000;
+    source address local_lo;
+    export filter local_net;
+    rr client;
+    bfd on;
+    import all;
+    password "bgp_secret";
+    add paths yes;
+}
+
+#use this template when need to connect to TOR switch using eBGP
+template bgp TOR {
+    local as 65000;
+    export filter local_net;
+    password "contrail_secret";
+    bfd on;
+    multihop;
+    import filter import_tor;
+}
+
+include "/etc/multicloud/bird/bird_footer.inc";
+```
+
+#### /etc/multicloud/bird/bird_header.inc 
+```
+define local_lo=100.65.0.2;
+define local_lan=[ 10.11.0.0/24,0.0.0.0/0  ];
+router id from 100.65.0.0/16;
+define local_ip=10.11.0.162;
+```
+
+#### /etc/multicloud/bird/bird_footer.inc 
+```
+protocol static {
+    # no support for single GW for multi-subnet
+    # in release 5.1
+    check link;
+    export all;
+}
+
+protocol static blackhole_noexport {
+    route 100.65.0.0/16 blackhole;
+    route 100.64.0.0/16 blackhole;
+    export all;
+}
+
+protocol static blackhole_export {
+    check link;
+    route local_ip/32 blackhole;
+    export all;
+}
+
+protocol bgp gw1006501 from GW {
+    neighbor 100.65.0.1 as 65000;
+}
+```
+

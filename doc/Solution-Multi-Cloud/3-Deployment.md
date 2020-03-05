@@ -131,88 +131,13 @@ docker cp .ssh/config contrail_command:/root/.ssh/
 ```
 
 
-### 3.2.3 Parameters
+### 3.2.3 Deployment YAML
 
 #### Build `topology.yaml`.
-```
-- provider: onprem
-  organization:
-  project:
-  instances:
-    - name: mc-gw
-      public_ip: 10.6.8.81
-      private_ip: 10.6.12.81
-      interface: eth1
-      provision: true
-      username: root
-      password: c0ntrail123
-      roles:
-        - gateway
-      private_subnet:
-        - 10.6.12.0/24
-        - 10.6.11.0/24
-      protocols_mode:
-        - ssl_client
-      gateway: 10.6.12.254
-
-- provider: aws
-  organization:
-  project:
-  prebuild: r1912
-  regions:
-    - name: us-west-1
-      vpc:
-        - name: vpc-1-aws
-          cidr_block: 10.11.0.0/16
-          subnets:
-            - name: mc-gw
-              cidr_block: 10.11.0.0/23
-              availability_zone: b
-          security_groups:
-              - name: egress
-                egress:
-                  from_port: 0
-                  to_port: 0
-                  protocol: -1
-                  cidr_blocks:
-                  - 0.0.0.0/0
-              - name: ingress
-                ingress:
-                  from_port: 0
-                  to_port: 0
-                  protocol: -1
-                  cidr_blocks:
-                  - 0.0.0.0/0
-          instances:
-            - name: mc-gw-vpc-1
-              roles:
-                - gateway
-              provision: true
-              username: ec2-user
-              os: rhel7
-              instance_type: t2.xlarge
-              subnets: mc-gw
-              availability_zone: b
-              protocols_mode:
-                - ssl_server
-              security_groups:
-                - egress
-                - ingress
-```
+[topology.yaml](A4-Deployment-YAML.md#a421-topology-yaml)
 
 #### Build `secret.yaml`.
-```
-public_key:
-  name: contrail-poc
-  value: __public_key__
-aws_access_key: __aws_access_key__
-aws_secret_key: __aws_secret_key__
-authorized_registries:
-  - registry: "hub.juniper.net/contrail"
-    tag: "1912.32"
-    username: __registry_username__
-    password: __registry_password__
-```
+[secret.yaml](A4-Deployment-YAML.md#a422-secret.yaml)
 
 #### Copy `topology.yaml` and `secret.yaml` into Command container.
 ```
