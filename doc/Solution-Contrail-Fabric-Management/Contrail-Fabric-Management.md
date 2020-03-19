@@ -18,7 +18,7 @@
   * [6.3 Bonding configuration on BMS](6-BMS-multi-homing.md#63-bonding-configuration-on-bms)
   * [6.4 Connectivity](6-BMS-multi-homing.md#64-connectivity)
 * [7 BMS L3 gateway](7-BMS-L3-gateway.md#7-bms-l3-gateway)
-  * [7.1 L3 gateway on spine](7-BMS-L3-gateway#.md71-l3-gateway-on-spine)
+  * [7.1 L3 gateway on spine](7-BMS-L3-gateway.md#71-l3-gateway-on-spine)
   * [7.2 L3 gateway on MX](7-BMS-L3-gateway.md#72-l3-gateway-on-mx)
 * [8 Overlay-underlay](8-Overlay-underlay.md#8-overlay-underlay)
   * [8.1 DC-GW on MX](8-Overlay-underlay.md#81-dc-gw-on-mx)
