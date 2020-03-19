@@ -9,4 +9,5 @@
 * [4 Cluster](4-Cluster.md#4-cluster)
   * [4.1 Cluster extension](4-Cluster.md#41-cluster-extension)
   * [4.2 Cluster interconnection](4-Cluster.md#42-cluster-interconnection)
+* [5 Deployment example](5-Deployment-example.md#5-deployment-example)
 
