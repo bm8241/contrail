@@ -6,8 +6,11 @@
 ```
 set groups underlay interfaces lo0 unit 0 family inet address 10.6.0.11/32
 set groups underlay interfaces xe-0/0/0 unit 0 family inet address 10.6.20.1/31
+set groups underlay interfaces xe-0/0/3 unit 0 family ethernet-switching vlan members vlan-11
+set groups underlay interfaces irb unit 11 family inet address 10.6.11.254/24
 set groups underlay policy-options policy-statement underlay-export term t1 from protocol direct
 set groups underlay policy-options policy-statement underlay-export term t1 from route-filter 10.6.0.11/32 exact
+set groups underlay policy-options policy-statement underlay-export term t1 from route-filter 10.6.11.0/24 exact
 set groups underlay policy-options policy-statement underlay-export term t1 then accept
 set groups underlay routing-options route-distinguisher-id 10.6.0.11
 set groups underlay protocols bgp group underlay type external
@@ -15,6 +18,8 @@ set groups underlay protocols bgp group underlay family inet unicast
 set groups underlay protocols bgp group underlay export underlay-export
 set groups underlay protocols bgp group underlay local-as 65011
 set groups underlay protocols bgp group underlay neighbor 10.6.20.0 peer-as 65021
+set groups underlay vlans vlan-11 vlan-id 11
+set groups underlay vlans vlan-11 l3-interface irb.11
 set apply-groups underlay
 set system host-name vqfx-leaf-11
 set system root-authentication encrypted-password "$6$l.zi0dZZ$EsvJo1Em2F0trWksE61MAAZAqgTx21xO0t0fam4rOgLqU8H6wb3O6yE.9eGkWEKN4hGPm2UYPdf4sTFf22afc1"
@@ -95,8 +100,11 @@ set interfaces em1 unit 0 family inet address 169.254.0.2/24
 ```
 set groups underlay interfaces lo0 unit 0 family inet address 10.6.0.111/32
 set groups underlay interfaces xe-0/0/0 unit 0 family inet address 10.6.30.11/31
+set groups underlay interfaces xe-0/0/3 unit 0 family ethernet-switching vlan members vlan-12
+set groups underlay interfaces irb unit 12 family inet address 10.6.12.254/24
 set groups underlay policy-options policy-statement underlay-export term t1 from protocol direct
 set groups underlay policy-options policy-statement underlay-export term t1 from route-filter 10.6.0.111/32 exact
+set groups underlay policy-options policy-statement underlay-export term t1 from route-filter 10.6.12.0/24 exact
 set groups underlay policy-options policy-statement underlay-export term t1 then accept
 set groups underlay routing-options route-distinguisher-id 10.6.0.111
 set groups underlay protocols bgp group underlay type external
@@ -104,6 +112,8 @@ set groups underlay protocols bgp group underlay family inet unicast
 set groups underlay protocols bgp group underlay export underlay-export
 set groups underlay protocols bgp group underlay local-as 65111
 set groups underlay protocols bgp group underlay neighbor 10.6.30.10 peer-as 65131
+set groups underlay vlans vlan-12 vlan-id 12
+set groups underlay vlans vlan-12 l3-interface irb.12
 set apply-groups underlay
 set system host-name vqfx-leaf-111
 set system root-authentication encrypted-password "$6$l.zi0dZZ$EsvJo1Em2F0trWksE61MAAZAqgTx21xO0t0fam4rOgLqU8H6wb3O6yE.9eGkWEKN4hGPm2UYPdf4sTFf22afc1"
