@@ -10,4 +10,6 @@
   * [4.1 Cluster extension](4-Cluster.md#41-cluster-extension)
   * [4.2 Cluster interconnection](4-Cluster.md#42-cluster-interconnection)
 * [5 Deployment VPN](5-Deployment-VPN.md#5-deployment-vpn)
+* [6 Deployment service provider edge](6-Deployment-Edge.md#6-deployment-service-provider-edge)
+* [7 Deployment enterprise](5-Deployment-Enterprise.md#7-deployment-enterprise)
 
