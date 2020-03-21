@@ -1,6 +1,6 @@
 * [TOC](Multi-Site.md#toc)
 
-# 5 Deployment example 1
+# 5 Deployment VPN
 
 * For service provider, each site gateway is both CE and PE.
 * Address space for each site is pre-allocated without overlapping.
