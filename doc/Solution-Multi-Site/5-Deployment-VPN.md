@@ -73,6 +73,8 @@ To expose a virtual network to customer, create a virtual network with customer 
 
 Route from customer site will be propagated and imported to virtual network. When launch a VM on the virtual network, VM route will be advertised to the CE on customer site. VM and host on customer site are connected.
 
+![Figure 5.6 Fabric](F5-6.png)
+
 * Launch `vm-red-customer-a` on virtual network `red-customer-a`. It can reach customer A site.
 * Launch `vm-red-customer-b` on virtual network `red-customer-b`. It can reach customer B site.
 * Launch `vm-shared` on virtual network `share-a-b`. It can reach both customer A and B sites.
