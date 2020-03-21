@@ -2,7 +2,7 @@
 
 # 5 Deployment VPN
 
-* This deployment is for service provider to expose (L3) or extend (L2) virtual network to customer who is connected by VPN.
+* This deployment is for service provider to expose virtual network to customer who is connected by L3VPN.
 * Multi-tenancy is supported. Address overlapping is supported for customers. Virtual network for different customer is isolated.
 
 * This is a virtual environemnt with vQFX (19.4R1.10) as leaf and spine, and vMX (19.4R1.10) as gateway.
@@ -46,10 +46,15 @@
 
 For Contrail to manage devices, on Contrail Command, create a fabric by importing the gateway only. The role is `spine`, `DC-Gateway` and `Route-Reflector`.
 
+![Figure 5.3 Fabric](F5-3.png)
+
 
 ### 5.3.2 Virtual network
 
 To expose a virtual network to customer, create a virtual network with customer route target and extend the virtual network to the gateway. Contrail will push configuration to create a VRF for that virtual network. Multi-tenancy is supported. Virtual networks exposed to different customers will be isolated. The same virtual network can also be shared by multiple customers.
+
+![Figure 5.4 Fabric](F5-4.png)
+![Figure 5.5 Fabric](F5-5.png)
 
 * Create virtual network `red-customer-a` with route target of customer A.
 * Create virtual network `red-customer-b` with route target of customer B.
@@ -61,7 +66,7 @@ To expose a virtual network to customer, create a virtual network with customer 
 1. MPLSoUDP is not supported by vMX properly. When test ping from VM to customer site, request always goes through. But only the first response packet is sent back to vrouter. So change it to MPLSoGRE, which works fine. It should work fine with physical MX.
 2. Remove `accept` from export policy `mpls_over_udp`, otherwise, the next policy won't be evaluated. This can be fixed by patching template.
 
-* [Configuration pushed by Contrail on gw-31, with the fix to address the above notes](A1-Deployment-VPN.md#a121-gw-31)
+* [Configuration pushed by Contrail on gw-31](A1-Deployment-VPN.md#a121-gw-31) with the fix to address the above notes
 
 
 ### 5.3.3 Connectivity
