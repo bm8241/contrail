@@ -4,7 +4,7 @@
 
 * This deployment is for service provider to expose virtual network to customer who is connected by L3VPN. L2 connectivity (intra-subnet) is not enabled. Very a few services require L2. L2 to service provider overlay may increase security concerns.
 * Multi-tenancy is supported. Address overlapping is supported for customers. Virtual network for different customer is isolated.
-* No EVPN-VXLAN based multi-homing is not enabled as for now. It should make no difference. It could be validated later.
+* EVPN-VXLAN based multi-homing is not enabled as for now. It should make no difference. It could be validated later.
 * BMS and SRIOV is not supported with this deployment.
 * This deployment is in a virtual environemnt with vQFX (19.4R1.10) as leaf and spine, and vMX (19.4R1.10) as gateway.
 
