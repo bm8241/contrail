@@ -1,12 +1,12 @@
 # A.1 Deployment VPN
 
-## A.1.1 Underlay
+## A.1.1 Infra-underlay
 
-### A.1.1.1 leaf-11
+### A.1.1.1 leaf-11 configuration
 ```
 set groups underlay interfaces lo0 unit 0 family inet address 10.6.0.11/32
 set groups underlay interfaces xe-0/0/0 unit 0 family inet address 10.6.20.1/31
-set groups underlay interfaces xe-0/0/3 unit 0 family ethernet-switching vlan members vlan-11
+set groups underlay interfaces xe-0/0/2 unit 0 family ethernet-switching vlan members vlan-11
 set groups underlay interfaces irb unit 11 family inet address 10.6.11.254/24
 set groups underlay policy-options policy-statement underlay-export term t1 from protocol direct
 set groups underlay policy-options policy-statement underlay-export term t1 from route-filter 10.6.0.11/32 exact
@@ -21,7 +21,7 @@ set groups underlay protocols bgp group underlay neighbor 10.6.20.0 peer-as 6502
 set groups underlay vlans vlan-11 vlan-id 11
 set groups underlay vlans vlan-11 l3-interface irb.11
 set apply-groups underlay
-set system host-name vqfx-leaf-11
+set system host-name leaf-11
 set system root-authentication encrypted-password "$6$l.zi0dZZ$EsvJo1Em2F0trWksE61MAAZAqgTx21xO0t0fam4rOgLqU8H6wb3O6yE.9eGkWEKN4hGPm2UYPdf4sTFf22afc1"
 set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpjEdmQaKZBc7d6yYzQrMxwvOcU4rUy07S8/Ms4gq9v17QNjQ/+B9DEzPy7zuJSD7g0J3sP9u91tMDxLPa06Ia2nteTmw8yIncmH4gbLougY9ju1a2aWy9iZeez5qFP32Knw+8NW4AemGoi6ymAqwXyuZ8bnP+tO3bIcu1ycrq/HPAgo6/v7EL/DnjYlssxjt3uZ6CZioDX9+hQ9jAprY2B/b6kVPvOEc/xpV3GYiaK/Gj4W93dZ9a6z9M5m6xewwUUUcz6EyJ0kkF8BeiozbkY/x8E33uNXa99wroqQZnyOzf0i+4WY02IlrcyX0NGzw9IzcHfhega7TXt5TkYKV contrail-poc"
 set system services ssh root-login allow
@@ -35,7 +35,7 @@ set interfaces em0 unit 0 family inet address 10.6.8.11/24
 set interfaces em1 unit 0 family inet address 169.254.0.2/24
 ```
 
-#### A.1.1.2 spine-21
+### A.1.1.2 spine-21 configuration
 ```
 set groups underlay interfaces lo0 unit 0 family inet address 10.6.0.21/32
 set groups underlay interfaces xe-0/0/0 unit 0 family inet address 10.6.30.0/31
@@ -54,7 +54,7 @@ set groups underlay protocols bgp group underlay neighbor 10.6.30.1 peer-as 6503
 set groups underlay protocols bgp group underlay neighbor 10.6.20.1 peer-as 65011
 set groups underlay protocols bgp group underlay neighbor 10.6.20.5 peer-as 65013
 set apply-groups underlay
-set system host-name vqfx-spine-21
+set system host-name spine-21
 set system root-authentication encrypted-password "$6$l.zi0dZZ$EsvJo1Em2F0trWksE61MAAZAqgTx21xO0t0fam4rOgLqU8H6wb3O6yE.9eGkWEKN4hGPm2UYPdf4sTFf22afc1"
 set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpjEdmQaKZBc7d6yYzQrMxwvOcU4rUy07S8/Ms4gq9v17QNjQ/+B9DEzPy7zuJSD7g0J3sP9u91tMDxLPa06Ia2nteTmw8yIncmH4gbLougY9ju1a2aWy9iZeez5qFP32Knw+8NW4AemGoi6ymAqwXyuZ8bnP+tO3bIcu1ycrq/HPAgo6/v7EL/DnjYlssxjt3uZ6CZioDX9+hQ9jAprY2B/b6kVPvOEc/xpV3GYiaK/Gj4W93dZ9a6z9M5m6xewwUUUcz6EyJ0kkF8BeiozbkY/x8E33uNXa99wroqQZnyOzf0i+4WY02IlrcyX0NGzw9IzcHfhega7TXt5TkYKV contrail-poc"
 set system services ssh root-login allow
@@ -68,10 +68,11 @@ set interfaces em0 unit 0 family inet address 10.6.8.21/24
 set interfaces em1 unit 0 family inet address 169.254.0.2/24
 ```
 
-### A.1.1.3 gw-31
+### A.1.1.3 gw-31 configuration
 ```
+set groups underlay chassis fpc 0 pic 0 tunnel-services bandwidth 1g
 set groups underlay interfaces lo0 unit 0 family inet address 10.6.0.31/32
-set groups underlay interfaces ge-0/0/2 unit 0 family inet address 10.6.30.1/31
+set groups underlay interfaces ge-0/0/1 unit 0 family inet address 10.6.30.1/31
 set groups underlay policy-options policy-statement underlay-export term t1 from protocol direct
 set groups underlay policy-options policy-statement underlay-export term t1 from route-filter 10.6.0.31/32 exact
 set groups underlay policy-options policy-statement underlay-export term t1 then accept
@@ -96,7 +97,7 @@ set groups core protocols bgp group core neighbor 10.6.0.33 peer-as 64500
 set groups core protocols ldp interface ge-0/0/0.0
 set apply-groups underlay
 set apply-groups core
-set system host-name vmx-31
+set system host-name gw-31
 set system root-authentication encrypted-password "$6$.eu1H0ZX$K3iXOzGi2WyIJbFaRxuVzjlK/W/3y.11o.3h8.rUbldqHi7akVrsQtj.HpOkqEbMIVQHiTpBzlX7/fCFJ27kJ1"
 set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpjEdmQaKZBc7d6yYzQrMxwvOcU4rUy07S8/Ms4gq9v17QNjQ/+B9DEzPy7zuJSD7g0J3sP9u91tMDxLPa06Ia2nteTmw8yIncmH4gbLougY9ju1a2aWy9iZeez5qFP32Knw+8NW4AemGoi6ymAqwXyuZ8bnP+tO3bIcu1ycrq/HPAgo6/v7EL/DnjYlssxjt3uZ6CZioDX9+hQ9jAprY2B/b6kVPvOEc/xpV3GYiaK/Gj4W93dZ9a6z9M5m6xewwUUUcz6EyJ0kkF8BeiozbkY/x8E33uNXa99wroqQZnyOzf0i+4WY02IlrcyX0NGzw9IzcHfhega7TXt5TkYKV contrail-poc"
 set system services ssh root-login allow
@@ -105,16 +106,25 @@ set system syslog user * any emergency
 set system syslog file messages any notice
 set system syslog file messages authorization info
 set system syslog file interactive-commands interactive-commands any
-set chassis fpc 0 pic 0 tunnel-services bandwidth 1g
+set system processes dhcp-service traceoptions file dhcp_logfile
+set system processes dhcp-service traceoptions file size 10m
+set system processes dhcp-service traceoptions level all
+set system processes dhcp-service traceoptions flag packet
 set interfaces fxp0 unit 0 family inet address 10.6.8.31/24
 ```
 
-### A.1.1.4 gw-33
+### A.1.1.4 gw-33 configuration
 ```
 set groups core interfaces ge-0/0/0 unit 0 family inet address 172.16.0.3/24
 set groups core interfaces ge-0/0/0 unit 0 family mpls
 set groups core interfaces lo0 unit 0 family inet address 10.6.0.33/32
+set groups core policy-options policy-statement core-export term t1 from protocol direct
+set groups core policy-options policy-statement core-export term t1 from route-filter 10.6.0.33/32 exact
+set groups core policy-options policy-statement core-export term t1 then next-hop self
+set groups core policy-options policy-statement core-export term t1 then accept
 set groups core routing-options route-distinguisher-id 10.6.0.33
+set groups core protocols ospf area 0.0.0.0 interface lo0.0
+set groups core protocols ospf area 0.0.0.0 interface ge-0/0/0.0
 set groups core protocols bgp group core type internal
 set groups core protocols bgp group core local-address 10.6.0.33
 set groups core protocols bgp group core family inet unicast
@@ -122,57 +132,54 @@ set groups core protocols bgp group core family inet-vpn unicast
 set groups core protocols bgp group core export core-export
 set groups core protocols bgp group core local-as 64500
 set groups core protocols bgp group core neighbor 10.6.0.31 peer-as 64500
-set groups core protocols ospf area 0.0.0.0 interface lo0.0
-set groups core protocols ospf area 0.0.0.0 interface ge-0/0/0.0
 set groups core protocols ldp interface ge-0/0/0.0
-set groups core policy-options policy-statement core-export term t1 from protocol direct
-set groups core policy-options policy-statement core-export term t1 from route-filter 10.6.0.33/32 exact
-set groups core policy-options policy-statement core-export term t1 then next-hop self
-set groups core policy-options policy-statement core-export term t1 then accept
-set groups customer-a interfaces ge-0/0/2 unit 0 family inet address 10.20.1.254/24
+set groups customer-a interfaces ge-0/0/1 unit 0 family inet address 10.20.1.254/24
 set groups customer-a interfaces lo0 unit 101 family inet address 10.20.1.10/32
 set groups customer-a policy-options policy-statement vrf-a-export term t1 from protocol bgp
 set groups customer-a policy-options policy-statement vrf-a-export term t1 then accept
+set groups customer-a routing-instances customer-a protocols ospf area 1.1.1.1 interface ge-0/0/1.0
+set groups customer-a routing-instances customer-a protocols ospf export vrf-a-export
 set groups customer-a routing-instances customer-a instance-type vrf
 set groups customer-a routing-instances customer-a interface lo0.101
-set groups customer-a routing-instances customer-a interface ge-0/0/2.0
+set groups customer-a routing-instances customer-a interface ge-0/0/1.0
 set groups customer-a routing-instances customer-a route-distinguisher 10.6.0.33:60101
 set groups customer-a routing-instances customer-a vrf-target target:60101:100
 set groups customer-a routing-instances customer-a vrf-table-label
-set groups customer-a routing-instances customer-a protocols ospf export vrf-a-export
-set groups customer-a routing-instances customer-a protocols ospf area 1.1.1.1 interface ge-0/0/2.0
-set groups customer-b interfaces ge-0/0/3 unit 0 family inet address 10.20.2.254/24
+set groups customer-b interfaces ge-0/0/2 unit 0 family inet address 10.20.2.254/24
 set groups customer-b interfaces lo0 unit 102 family inet address 10.20.2.10/32
 set groups customer-b policy-options policy-statement vrf-b-export term t1 from protocol bgp
 set groups customer-b policy-options policy-statement vrf-b-export term t1 then accept
+set groups customer-b routing-instances customer-b protocols ospf area 2.2.2.2 interface ge-0/0/2.0
+set groups customer-b routing-instances customer-b protocols ospf export vrf-b-export
 set groups customer-b routing-instances customer-b instance-type vrf
 set groups customer-b routing-instances customer-b interface lo0.102
-set groups customer-b routing-instances customer-b interface ge-0/0/3.0
+set groups customer-b routing-instances customer-b interface ge-0/0/2.0
 set groups customer-b routing-instances customer-b route-distinguisher 10.6.0.33:60102
 set groups customer-b routing-instances customer-b vrf-target target:60102:100
 set groups customer-b routing-instances customer-b vrf-table-label
-set groups customer-b routing-instances customer-b protocols ospf export vrf-b-export
-set groups customer-b routing-instances customer-b protocols ospf area 2.2.2.2 interface ge-0/0/3.0
 set apply-groups core
 set apply-groups customer-a
 set apply-groups customer-b
+set system host-name gw-33
 set system root-authentication encrypted-password "$6$.eu1H0ZX$K3iXOzGi2WyIJbFaRxuVzjlK/W/3y.11o.3h8.rUbldqHi7akVrsQtj.HpOkqEbMIVQHiTpBzlX7/fCFJ27kJ1"
 set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpjEdmQaKZBc7d6yYzQrMxwvOcU4rUy07S8/Ms4gq9v17QNjQ/+B9DEzPy7zuJSD7g0J3sP9u91tMDxLPa06Ia2nteTmw8yIncmH4gbLougY9ju1a2aWy9iZeez5qFP32Knw+8NW4AemGoi6ymAqwXyuZ8bnP+tO3bIcu1ycrq/HPAgo6/v7EL/DnjYlssxjt3uZ6CZioDX9+hQ9jAprY2B/b6kVPvOEc/xpV3GYiaK/Gj4W93dZ9a6z9M5m6xewwUUUcz6EyJ0kkF8BeiozbkY/x8E33uNXa99wroqQZnyOzf0i+4WY02IlrcyX0NGzw9IzcHfhega7TXt5TkYKV contrail-poc"
-set system host-name vmx-33
 set system services ssh root-login allow
 set system services netconf ssh
 set system syslog user * any emergency
 set system syslog file messages any notice
 set system syslog file messages authorization info
 set system syslog file interactive-commands interactive-commands any
-set chassis fpc 0 pic 0 tunnel-services bandwidth 1g
+set system processes dhcp-service traceoptions file dhcp_logfile
+set system processes dhcp-service traceoptions file size 10m
+set system processes dhcp-service traceoptions level all
+set system processes dhcp-service traceoptions flag packet
 set interfaces fxp0 unit 0 family inet address 10.6.8.33/24
 ```
 
-### A.1.1.5 gw-101
+### A.1.1.5 gw-101 configuration
 ```
 set groups site interfaces xe-0/0/0 unit 0 family inet address 10.20.1.253/24
-set groups site interfaces xe-0/0/2 unit 0 family ethernet-switching vlan members vlan-8
+set groups site interfaces xe-0/0/1 unit 0 family ethernet-switching vlan members vlan-8
 set groups site interfaces irb unit 8 family inet address 172.16.11.254/24
 set groups site protocols ospf area 1.1.1.1 interface xe-0/0/0.0
 set groups site protocols ospf area 1.1.1.1 interface irb.8
@@ -193,10 +200,10 @@ set interfaces em0 unit 0 family inet address 10.6.8.101/24
 set interfaces em1 unit 0 family inet address 169.254.0.2/24
 ```
 
-### A.1.1.6 gw-102
+### A.1.1.6 gw-102 configuration
 ```
 set groups site interfaces xe-0/0/0 unit 0 family inet address 10.20.2.253/24
-set groups site interfaces xe-0/0/2 unit 0 family ethernet-switching vlan members vlan-8
+set groups site interfaces xe-0/0/1 unit 0 family ethernet-switching vlan members vlan-8
 set groups site interfaces irb unit 8 family inet address 172.16.12.254/24
 set groups site protocols ospf area 2.2.2.2 interface xe-0/0/0.0
 set groups site protocols ospf area 2.2.2.2 interface irb.8
@@ -217,10 +224,7 @@ set interfaces em0 unit 0 family inet address 10.6.8.102/24
 set interfaces em1 unit 0 family inet address 169.254.0.2/24
 ```
 
-
-## A.1.2 Overlay
-
-### A.1.2.1 gw-31
+### A.1.1.7 gw-31 configuration
 ```
 set groups __contrail_basic__ snmp community public authorization read-only
 set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from family evpn
@@ -391,9 +395,7 @@ set apply-groups __contrail_overlay_fip_snat__
 set apply-groups __contrail_overlay_networking__
 ```
 
-## A.1.3 Route table
-
-### A.1.3.1 gw-31
+### A.1.1.8 gw-31 route table
 ```
 root@vmx-31> show route table _contrail_red-customer-a-l3-8.inet.0 
 
@@ -505,7 +507,7 @@ _contrail_share-a-b-l3-10.inet.0: 12 destinations, 16 routes (12 active, 0 holdd
                     >  via gr-0/0/10.32770, Push 39
 ```
 
-### A.1.3.2 gw-33
+### A.1.1.9 gw-33 route table
 ```
 root@vmx-33> show route table customer-a.inet.0 
 
@@ -564,7 +566,7 @@ customer-b.inet.0: 9 destinations, 9 routes (9 active, 0 holddown, 0 hidden)
                       MultiRecv
 ```
 
-### A.1.3.3 gw-101
+### A.1.1.10 gw-101 route table
 ```
 root@gw-101> show route table inet.0 
 
@@ -599,7 +601,7 @@ inet.0: 13 destinations, 13 routes (13 active, 0 holddown, 0 hidden)
                        MultiRecv
 ```
 
-### A.1.3.4 gw-102
+### A.1.1.11 gw-102 route table
 ```
 root@gw-102> show route table inet.0 
 
@@ -633,4 +635,130 @@ inet.0: 13 destinations, 13 routes (13 active, 0 holddown, 0 hidden)
 224.0.0.5/32       *[OSPF/10] 01:36:03, metric 1
                        MultiRecv
 ```
+
+## A.1.2 Infra-overlay with gateway on site gateway
+
+### A.1.2.1 leaf-11 configuration
+```
+set groups underlay interfaces lo0 unit 0 family inet address 10.6.0.11/32
+set groups underlay interfaces xe-0/0/0 unit 0 family inet address 10.6.20.1/31
+set groups underlay policy-options policy-statement underlay-export term t1 from protocol direct
+set groups underlay policy-options policy-statement underlay-export term t1 from route-filter 10.6.0.11/32 exact
+set groups underlay policy-options policy-statement underlay-export term t1 then accept
+set groups underlay routing-options route-distinguisher-id 10.6.0.11
+set groups underlay protocols bgp group underlay type external
+set groups underlay protocols bgp group underlay family inet unicast
+set groups underlay protocols bgp group underlay export underlay-export
+set groups underlay protocols bgp group underlay local-as 65011
+set groups underlay protocols bgp group underlay neighbor 10.6.20.0 peer-as 65021
+set groups __contrail_basic__ snmp community public authorization read-only
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from family evpn
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 2
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 1
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 3
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 4
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 5
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 6
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 then community add COM-MAINTENANCE
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 then accept
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term100 then accept
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from family evpn
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from community COM-MAINTENANCE
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 2
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 1
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 3
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 4
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 5
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 6
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 then reject
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE-underlay then as-path-prepend "9999 9999 9999"
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE-underlay then accept
+set groups __contrail_basic__ policy-options community COM-MAINTENANCE members 9999:9999
+set groups __contrail_basic__ protocols l2-learning global-mac-table-aging-time 1800
+set groups __contrail_overlay_bgp__ policy-options policy-statement _contrail_ibgp_export_policy term inet-vpn from family inet-vpn
+set groups __contrail_overlay_bgp__ policy-options policy-statement _contrail_ibgp_export_policy term inet-vpn then next-hop self
+set groups __contrail_overlay_bgp__ policy-options policy-statement _contrail_ibgp_export_policy term inet6-vpn from family inet6-vpn
+set groups __contrail_overlay_bgp__ policy-options policy-statement _contrail_ibgp_export_policy term inet6-vpn then next-hop self
+set groups __contrail_overlay_bgp__ routing-options route-distinguisher-id 10.6.0.11
+set groups __contrail_overlay_bgp__ routing-options resolution rib bgp.rtarget.0 resolution-ribs inet.0
+set groups __contrail_overlay_bgp__ routing-options router-id 10.6.0.11
+set groups __contrail_overlay_bgp__ routing-options autonomous-system 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 type internal
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 local-address 10.6.0.11
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 hold-time 90
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 family evpn signaling
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 family route-target
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 export _contrail_ibgp_export_policy
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 local-as 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 multipath
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 neighbor 10.6.0.31 peer-as 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 vpn-apply-export
+set groups __contrail_overlay_evpn__ policy-options policy-statement EVPN-LB term term1 from protocol evpn
+set groups __contrail_overlay_evpn__ policy-options policy-statement EVPN-LB term term1 then load-balance per-packet
+set groups __contrail_overlay_evpn__ policy-options policy-statement _contrail_data-l2-11-import term t1 from community target_64520_8000010
+set groups __contrail_overlay_evpn__ policy-options policy-statement _contrail_data-l2-11-import term t1 then accept
+set groups __contrail_overlay_evpn__ policy-options policy-statement _contrail_data-l2-11-export term t1 then community add target_64520_8000010
+set groups __contrail_overlay_evpn__ policy-options policy-statement _contrail_data-l2-11-export term t1 then accept
+set groups __contrail_overlay_evpn__ policy-options policy-statement import-evpn term esi-in from community community-esi-in
+set groups __contrail_overlay_evpn__ policy-options policy-statement import-evpn term esi-in then accept
+set groups __contrail_overlay_evpn__ policy-options policy-statement import-evpn term default-term then reject
+set groups __contrail_overlay_evpn__ policy-options community target_64520_8000010 members target:64520:8000010
+set groups __contrail_overlay_evpn__ policy-options community community-esi-in members target:64520:7999999
+set groups __contrail_overlay_evpn__ routing-options forwarding-table export EVPN-LB
+set groups __contrail_overlay_evpn__ protocols evpn vni-options vni 11 vrf-target target:64520:8000010
+set groups __contrail_overlay_evpn__ protocols evpn encapsulation vxlan
+set groups __contrail_overlay_evpn__ protocols evpn extended-vni-list all
+set groups __contrail_overlay_evpn__ switch-options vtep-source-interface lo0.0
+set groups __contrail_overlay_evpn__ switch-options route-distinguisher 10.6.0.11:7999
+set groups __contrail_overlay_evpn__ switch-options vrf-import _contrail_data-l2-11-import
+set groups __contrail_overlay_evpn__ switch-options vrf-import import-evpn
+set groups __contrail_overlay_evpn__ switch-options vrf-target target:64520:7999999
+set groups __contrail_overlay_evpn_access__ interfaces xe-0/0/2 description "Virtual Port Group : data"
+set groups __contrail_overlay_evpn_access__ interfaces xe-0/0/2 native-vlan-id 4094
+set groups __contrail_overlay_evpn_access__ interfaces xe-0/0/2 mtu 9192
+set groups __contrail_overlay_evpn_access__ interfaces xe-0/0/2 unit 0 family ethernet-switching interface-mode trunk
+set groups __contrail_overlay_evpn_access__ interfaces xe-0/0/2 unit 0 family ethernet-switching vlan members bd-11
+set groups __contrail_overlay_evpn_access__ protocols evpn multicast-mode ingress-replication
+set groups __contrail_overlay_evpn_access__ protocols igmp-snooping vlan all proxy
+set groups __contrail_overlay_evpn_access__ switch-options vrf-target auto
+set groups __contrail_overlay_evpn_access__ vlans bd-11 description "Virtual Network - data"
+set groups __contrail_overlay_evpn_access__ vlans bd-11 vlan-id 4094
+set groups __contrail_overlay_evpn_access__ vlans bd-11 vxlan vni 11
+set groups __contrail_overlay_security_group_vqfx-10000__
+set groups __contrail_overlay_lag__
+set groups __contrail_overlay_multi_homing__
+set groups __contrail_overlay_storm_control__
+set groups __contrail_overlay_telemetry__
+set apply-groups underlay
+set apply-groups __contrail_basic__
+set apply-groups __contrail_overlay_bgp__
+set apply-groups __contrail_overlay_evpn__
+set apply-groups __contrail_overlay_evpn_access__
+set apply-groups __contrail_overlay_security_group_vqfx-10000__
+set apply-groups __contrail_overlay_lag__
+set apply-groups __contrail_overlay_multi_homing__
+set apply-groups __contrail_overlay_storm_control__
+set apply-groups __contrail_overlay_telemetry__
+set system host-name leaf-11
+set system root-authentication encrypted-password "$6$l.zi0dZZ$EsvJo1Em2F0trWksE61MAAZAqgTx21xO0t0fam4rOgLqU8H6wb3O6yE.9eGkWEKN4hGPm2UYPdf4sTFf22afc1"
+set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpjEdmQaKZBc7d6yYzQrMxwvOcU4rUy07S8/Ms4gq9v17QNjQ/+B9DEzPy7zuJSD7g0J3sP9u91tMDxLPa06Ia2nteTmw8yIncmH4gbLougY9ju1a2aWy9iZeez5qFP32Knw+8NW4AemGoi6ymAqwXyuZ8bnP+tO3bIcu1ycrq/HPAgo6/v7EL/DnjYlssxjt3uZ6CZioDX9+hQ9jAprY2B/b6kVPvOEc/xpV3GYiaK/Gj4W93dZ9a6z9M5m6xewwUUUcz6EyJ0kkF8BeiozbkY/x8E33uNXa99wroqQZnyOzf0i+4WY02IlrcyX0NGzw9IzcHfhega7TXt5TkYKV contrail-poc"
+set system services ssh root-login allow
+set system services netconf ssh
+set system syslog user * any emergency
+set system syslog file messages any notice
+set system syslog file messages authorization info
+set system syslog file interactive-commands interactive-commands any
+set system extensions providers juniper license-type juniper deployment-scope commercial
+set system extensions providers chef license-type juniper deployment-scope commercial
+set interfaces em0 unit 0 family inet address 10.6.8.11/24
+set interfaces em1 unit 0 family inet address 169.254.0.2/24
+```
+
+### A.1.2.2 spine-21 configuration
+### A.1.2.3 gw-31 configuration
+
+
+## A.1.3 Infra-overlay with gateway on spine
+
 
