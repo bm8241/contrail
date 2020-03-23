@@ -755,9 +755,257 @@ set interfaces em0 unit 0 family inet address 10.6.8.11/24
 set interfaces em1 unit 0 family inet address 169.254.0.2/24
 ```
 
-### A.1.2.2 spine-21 configuration
-### A.1.2.3 gw-31 configuration
+### A.1.2.2 gw-31 configuration
+```
+set groups underlay chassis fpc 0 pic 0 tunnel-services bandwidth 1g
+set groups underlay interfaces lo0 unit 0 family inet address 10.6.0.31/32
+set groups underlay interfaces ge-0/0/1 unit 0 family inet address 10.6.30.1/31
+set groups underlay policy-options policy-statement underlay-export term t1 from protocol direct
+set groups underlay policy-options policy-statement underlay-export term t1 from route-filter 10.6.0.31/32 exact
+set groups underlay policy-options policy-statement underlay-export term t1 then accept
+set groups underlay routing-options route-distinguisher-id 10.6.0.31
+set groups underlay protocols bgp group underlay type external
+set groups underlay protocols bgp group underlay family inet unicast
+set groups underlay protocols bgp group underlay export underlay-export
+set groups underlay protocols bgp group underlay local-as 65031
+set groups underlay protocols bgp group underlay neighbor 10.6.30.0 peer-as 65021
+set groups core interfaces ge-0/0/0 unit 0 family inet address 172.16.0.1/24
+set groups core interfaces ge-0/0/0 unit 0 family mpls
+set groups core policy-options policy-statement core-export term t1 then next-hop self
+set groups core protocols ospf area 0.0.0.0 interface lo0.0
+set groups core protocols ospf area 0.0.0.0 interface ge-0/0/0.0
+set groups core protocols bgp group core type internal
+set groups core protocols bgp group core local-address 10.6.0.31
+set groups core protocols bgp group core family inet unicast
+set groups core protocols bgp group core family inet-vpn unicast
+set groups core protocols bgp group core export core-export
+set groups core protocols bgp group core local-as 64500
+set groups core protocols bgp group core neighbor 10.6.0.33 peer-as 64500
+set groups core protocols ldp interface ge-0/0/0.0
+set groups __contrail_basic__ snmp community public authorization read-only
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from family evpn
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 2
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 1
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 3
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 4
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 5
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 from nlri-route-type 6
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 then community add COM-MAINTENANCE
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term1 then accept
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE term term100 then accept
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from family evpn
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from community COM-MAINTENANCE
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 2
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 1
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 3
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 4
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 5
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 from nlri-route-type 6
+set groups __contrail_basic__ policy-options policy-statement REJECT-MAINTENANCE-MODE term term1 then reject
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE-underlay then as-path-prepend "9999 9999 9999"
+set groups __contrail_basic__ policy-options policy-statement MAINTENANCE-MODE-underlay then accept
+set groups __contrail_basic__ policy-options community COM-MAINTENANCE members 9999:9999
+set groups __contrail_basic__ protocols l2-learning global-mac-table-aging-time 1800
+set groups __contrail_overlay_bgp__ policy-options policy-statement mpls_over_udp term 1 then community add encap-udp
+set groups __contrail_overlay_bgp__ policy-options policy-statement mpls_over_udp term 1 then accept
+set groups __contrail_overlay_bgp__ policy-options policy-statement _contrail_ibgp_export_policy term inet-vpn from family inet-vpn
+set groups __contrail_overlay_bgp__ policy-options policy-statement _contrail_ibgp_export_policy term inet-vpn then next-hop self
+set groups __contrail_overlay_bgp__ policy-options policy-statement _contrail_ibgp_export_policy term inet6-vpn from family inet6-vpn
+set groups __contrail_overlay_bgp__ policy-options policy-statement _contrail_ibgp_export_policy term inet6-vpn then next-hop self
+set groups __contrail_overlay_bgp__ policy-options community encap-udp members 0x030c:64512:13
+set groups __contrail_overlay_bgp__ routing-options route-distinguisher-id 10.6.0.31
+set groups __contrail_overlay_bgp__ routing-options dynamic-tunnels _contrail_udp_tunnel source-address 10.6.0.31
+set groups __contrail_overlay_bgp__ routing-options dynamic-tunnels _contrail_udp_tunnel gre
+set groups __contrail_overlay_bgp__ routing-options dynamic-tunnels _contrail_udp_tunnel destination-networks 10.6.11.0/24
+set groups __contrail_overlay_bgp__ routing-options dynamic-tunnels _contrail_udp_tunnel destination-networks 10.6.12.0/24
+set groups __contrail_overlay_bgp__ routing-options resolution rib bgp.rtarget.0 resolution-ribs inet.0
+set groups __contrail_overlay_bgp__ routing-options router-id 10.6.0.31
+set groups __contrail_overlay_bgp__ routing-options autonomous-system 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 type internal
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 local-address 10.6.0.31
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 hold-time 90
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 family inet-vpn unicast
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 family inet6-vpn unicast
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 family evpn signaling
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 family route-target
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 export _contrail_ibgp_export_policy
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 cluster 10.6.0.31
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 local-as 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 multipath
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 neighbor 10.6.0.11 peer-as 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 neighbor 10.6.0.13 peer-as 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 neighbor 10.6.11.1 peer-as 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 neighbor 10.6.8.6 peer-as 64520
+set groups __contrail_overlay_bgp__ protocols bgp group _contrail_asn-64520 vpn-apply-export
+set groups __contrail_overlay_fip_snat__ interfaces irb gratuitous-arp-reply
+set groups __contrail_overlay_fip_snat__ routing-instances _contrail_red-customer-a-l3-8 interface irb.8
+set groups __contrail_overlay_fip_snat__ routing-instances _contrail_red-customer-b-l3-9 interface irb.9
+set groups __contrail_overlay_fip_snat__ routing-instances _contrail_share-a-b-l3-10 interface irb.10
+set groups __contrail_overlay_networking__ interfaces irb gratuitous-arp-reply
+set groups __contrail_overlay_networking__ interfaces irb unit 10 family inet address 192.168.50.5/24 virtual-gateway-address 192.168.50.1
+set groups __contrail_overlay_networking__ interfaces irb unit 8 family inet address 192.168.10.5/24 virtual-gateway-address 192.168.10.1
+set groups __contrail_overlay_networking__ interfaces irb unit 9 family inet address 192.168.10.5/24 virtual-gateway-address 192.168.10.1
+set groups __contrail_overlay_networking__ interfaces irb unit 11 virtual-gateway-accept-data
+set groups __contrail_overlay_networking__ interfaces irb unit 11 family inet address 10.6.11.253/24 virtual-gateway-address 10.6.11.254
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l2-11-import term t1 from community target_64520_8000010
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l2-11-import term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l2-11-import then reject
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l2-11-export term t1 then community add target_64520_8000010
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l2-11-export term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l3-11-import term t1 from community target_64520_8000010
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l3-11-import term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l3-11-import then reject
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l3-11-export term t1 then community add target_64520_8000010
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_data-l3-11-export term t1 then accept
+set groups __contrail_overlay_networking__ policy-options community target_64520_8000010 members target:64520:8000010
+set groups __contrail_overlay_networking__ policy-options community target_60101_100 members target:60101:100
+set groups __contrail_overlay_networking__ policy-options community target_60102_100 members target:60102:100
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 protocols evpn encapsulation vxlan
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 protocols evpn extended-vni-list all
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 vtep-source-interface lo0.0
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 instance-type virtual-switch
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 bridge-domains bd-11 vlan-id none
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 bridge-domains bd-11 routing-interface irb.11
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 bridge-domains bd-11 vxlan vni 11
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 route-distinguisher 10.6.0.31:11
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 vrf-import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 vrf-import _contrail_data-l2-11-import
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 vrf-export _contrail_data-l2-11-export
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l2-11 vrf-target target:64520:11
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 routing-options static route 10.6.11.0/24 discard
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 routing-options auto-export family inet unicast
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 instance-type vrf
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 route-distinguisher 10.6.0.31:30011
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 vrf-import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 vrf-import _contrail_data-l3-11-import
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 vrf-export _contrail_data-l3-11-export
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 vrf-target target:64520:30011
+set groups __contrail_overlay_networking__ routing-instances _contrail_data-l3-11 vrf-table-label
+set apply-groups underlay
+set apply-groups core
+set apply-groups __contrail_basic__
+set apply-groups __contrail_overlay_bgp__
+set apply-groups __contrail_overlay_fip_snat__
+set apply-groups __contrail_overlay_networking__
+set system host-name gw-31
+set system root-authentication encrypted-password "$6$.eu1H0ZX$K3iXOzGi2WyIJbFaRxuVzjlK/W/3y.11o.3h8.rUbldqHi7akVrsQtj.HpOkqEbMIVQHiTpBzlX7/fCFJ27kJ1"
+set system root-authentication ssh-rsa "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDlpjEdmQaKZBc7d6yYzQrMxwvOcU4rUy07S8/Ms4gq9v17QNjQ/+B9DEzPy7zuJSD7g0J3sP9u91tMDxLPa06Ia2nteTmw8yIncmH4gbLougY9ju1a2aWy9iZeez5qFP32Knw+8NW4AemGoi6ymAqwXyuZ8bnP+tO3bIcu1ycrq/HPAgo6/v7EL/DnjYlssxjt3uZ6CZioDX9+hQ9jAprY2B/b6kVPvOEc/xpV3GYiaK/Gj4W93dZ9a6z9M5m6xewwUUUcz6EyJ0kkF8BeiozbkY/x8E33uNXa99wroqQZnyOzf0i+4WY02IlrcyX0NGzw9IzcHfhega7TXt5TkYKV contrail-poc"
+set system services ssh root-login allow
+set system services netconf ssh
+set system syslog user * any emergency
+set system syslog file messages any notice
+set system syslog file messages authorization info
+set system syslog file interactive-commands interactive-commands any
+set system processes dhcp-service traceoptions file dhcp_logfile
+set system processes dhcp-service traceoptions file size 10m
+set system processes dhcp-service traceoptions level all
+set system processes dhcp-service traceoptions flag packet
+set interfaces fxp0 unit 0 family inet address 10.6.8.31/24
+```
 
+### A.1.2.3 gw-31 configuration
+```
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l2-8-import term t1 from community target_60101_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l2-8-import term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l2-8-import then reject
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l2-8-export term t1 then community add target_60101_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l2-8-export term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l3-8-import term t1 from community target_60101_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l3-8-import term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l3-8-import then reject
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l3-8-export term t1 then community add target_60101_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-a-l3-8-export term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l2-9-import term t1 from community target_60102_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l2-9-import term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l2-9-import then reject
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l2-9-export term t1 then community add target_60102_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l2-9-export term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l3-9-import term t1 from community target_60102_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l3-9-import term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l3-9-import then reject
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l3-9-export term t1 then community add target_60102_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_red-customer-b-l3-9-export term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l2-10-import term t1 from community target_60102_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l2-10-import term t1 from community target_60101_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l2-10-import term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l2-10-import then reject
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l2-10-export term t1 then community add target_60102_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l2-10-export term t1 then community add target_60101_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l2-10-export term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l3-10-import term t1 from community target_60102_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l3-10-import term t1 from community target_60101_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l3-10-import term t1 then accept
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l3-10-import then reject
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l3-10-export term t1 then community add target_60102_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l3-10-export term t1 then community add target_60101_100
+set groups __contrail_overlay_networking__ policy-options policy-statement _contrail_share-a-b-l3-10-export term t1 then accept
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 protocols evpn encapsulation vxlan
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 protocols evpn extended-vni-list all
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 vtep-source-interface lo0.0
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 instance-type virtual-switch
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 bridge-domains bd-8 vlan-id none
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 bridge-domains bd-8 routing-interface irb.8
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 bridge-domains bd-8 vxlan vni 8
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 route-distinguisher 10.6.0.31:8
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 vrf-import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 vrf-import _contrail_red-customer-a-l2-8-import
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 vrf-export _contrail_red-customer-a-l2-8-export
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l2-8 vrf-target target:64520:8
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 routing-options static route 192.168.10.0/24 discard
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 routing-options auto-export family inet unicast
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 instance-type vrf
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 interface irb.8
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 route-distinguisher 10.6.0.31:30008
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 vrf-import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 vrf-import _contrail_red-customer-a-l3-8-import
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 vrf-export _contrail_red-customer-a-l3-8-export
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 vrf-target target:64520:30008
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-a-l3-8 vrf-table-label
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 protocols evpn encapsulation vxlan
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 protocols evpn extended-vni-list all
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 vtep-source-interface lo0.0
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 instance-type virtual-switch
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 bridge-domains bd-9 vlan-id none
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 bridge-domains bd-9 routing-interface irb.9
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 bridge-domains bd-9 vxlan vni 9
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 route-distinguisher 10.6.0.31:9
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 vrf-import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 vrf-import _contrail_red-customer-b-l2-9-import
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 vrf-export _contrail_red-customer-b-l2-9-export
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l2-9 vrf-target target:64520:9
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 routing-options static route 192.168.10.0/24 discard
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 routing-options auto-export family inet unicast
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 instance-type vrf
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 interface irb.9
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 route-distinguisher 10.6.0.31:30009
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 vrf-import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 vrf-import _contrail_red-customer-b-l3-9-import
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 vrf-export _contrail_red-customer-b-l3-9-export
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 vrf-target target:64520:30009
+set groups __contrail_overlay_networking__ routing-instances _contrail_red-customer-b-l3-9 vrf-table-label
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 protocols evpn encapsulation vxlan
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 protocols evpn extended-vni-list all
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 vtep-source-interface lo0.0
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 instance-type virtual-switch
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 bridge-domains bd-10 vlan-id none
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 bridge-domains bd-10 routing-interface irb.10
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 bridge-domains bd-10 vxlan vni 10
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 route-distinguisher 10.6.0.31:10
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 vrf-import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 vrf-import _contrail_share-a-b-l2-10-import
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 vrf-export _contrail_share-a-b-l2-10-export
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l2-10 vrf-target target:64520:10
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 routing-options static route 192.168.50.0/24 discard
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 routing-options auto-export family inet unicast
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 instance-type vrf
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 interface irb.10
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 route-distinguisher 10.6.0.31:30010
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 vrf-import REJECT-MAINTENANCE-MODE
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 vrf-import _contrail_share-a-b-l3-10-import
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 vrf-export _contrail_share-a-b-l3-10-export
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 vrf-target target:64520:30010
+set groups __contrail_overlay_networking__ routing-instances _contrail_share-a-b-l3-10 vrf-table-label
+```
 
 ## A.1.3 Infra-overlay with gateway on spine
 

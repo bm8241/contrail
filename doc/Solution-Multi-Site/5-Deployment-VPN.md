@@ -55,6 +55,7 @@ For Contrail to manage devices, on Contrail Command, create a fabric by importin
 To expose a virtual network to customer, create a virtual network with customer route target and extend the virtual network to the gateway. Contrail will configure the gateway to create a VRF for that virtual network. Multi-tenancy is supported. Virtual networks exposed to different customers will be isolated. The same virtual network can also be shared by multiple customers.
 
 ![Figure 5.13 Virtual network route target](F5-13.png)
+
 ![Figure 5.14 Extend virtual network](F5-14.png)
 
 * Create virtual network `red-customer-a` with route target of customer A.
@@ -99,9 +100,9 @@ Route from customer site will be propagated and imported to virtual network. Whe
 ### 5.2.1 Deployment configuration
 
 * [Configuration on leaf-11](A1-Deployment-VPN.md#a121-leaf-11-configuration)
-* [Configuration on spine-21](A1-Deployment-VPN.md#a122-spine-21-configuration)
-* [Configuration on gw-31](A1-Deployment-VPN.md#a123-gw-31-configuration)
-Configuration on `gw-33`, `gw-101` and `gw-102` is the same as 5.1.1.
+* [Configuration on gw-31](A1-Deployment-VPN.md#a122-gw-31-configuration)
+
+Configuration on `spine-21`, `gw-33`, `gw-101` and `gw-102` is the same as 5.1.1.
 
 #### Note
 Infra-overlay configuration on `leaf-11` and `gw-31`, in this case, is configured by Contrail, with manual fixes.
@@ -114,7 +115,7 @@ Infra-overlay configuration on `leaf-11` and `gw-31`, in this case, is configure
 
 The workflow is the same as 5.1.2.
 
-* [Configuration pushed by Contrail on gw-31](A1-Deployment-VPN.md#a124-gw-31) with the fix to address the above notes
+* [Configuration pushed by Contrail on gw-31](A1-Deployment-VPN.md#a123-gw-31-configuration)
 
 
 ### 5.2.3 Connectivity
